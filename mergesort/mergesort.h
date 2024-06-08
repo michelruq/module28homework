@@ -69,11 +69,20 @@ void MergeSort::MergingSort(int* a, int p, int r)
       return;
    }
    int q = (p + r - 1)/2;
-   auto f = std::async(std::launch::async, [&]() {
+   if((p - r) < 10000)
+   {
+      auto f = std::async(std::launch::async, [&]() {
            MergingSort(a, p, q);
        }); 
-   MergingSort(a, q + 1, r);
-   f.get();  
+       MergingSort(a, q + 1, r);
+       f.get();  
+   }
+   else
+   {
+       MergingSort(a, p, q);
+       MergingSort(a, q + 1, r);
+   }
+   
    Merge(a, p, q, r);
 }
 
